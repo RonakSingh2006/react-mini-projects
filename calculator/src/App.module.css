@@ -1,0 +1,13 @@
+body{
+  display: flex;
+  justify-content:  center;
+  align-items: center;
+
+  height: 100vh;
+}
+.calculator{
+  border: 1px solid gray;
+  border-radius: 5px;
+  width: 250px;
+  height: 365px;
+}

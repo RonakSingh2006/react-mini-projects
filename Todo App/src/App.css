@@ -1,0 +1,15 @@
+input{
+  width: 100%;
+}
+
+.row{
+  margin: 5px;
+}
+
+.row > *{
+  text-align: left;
+}
+
+.btn{
+  width: 60%;
+}

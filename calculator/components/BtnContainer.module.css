@@ -1,0 +1,10 @@
+.btnContainer{
+  margin: 10px;
+
+  display: flex;
+  gap: 10px;
+
+  justify-content: space-evenly;
+
+  flex-wrap: wrap;
+}
