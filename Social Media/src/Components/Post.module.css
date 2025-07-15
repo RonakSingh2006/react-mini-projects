@@ -1,0 +1,10 @@
+.post{
+  margin :15px 20px;
+  width: 30rem;
+}
+.tag{
+  margin: 5px;
+}
+.delete{
+  cursor: pointer;
+}
