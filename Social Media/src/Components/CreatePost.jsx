@@ -16,8 +16,15 @@ function CreatePost() {
   return (
     <form className={style.createPost} onSubmit={(e)=>{
       e.preventDefault();
+
+      let reactionArr = reaction.current.value.split(" ");
+      let reactionObj = {
+        likes : reactionArr[0],
+        dislikes : reactionArr[1]
+      } 
+
       
-      addPost(user.current.value,title.current.value,postText.current.value,reaction.current.value,tags.current.value);
+      addPost(user.current.value,title.current.value,postText.current.value,reactionObj,tags.current.value.split(" "));
 
       user.current.value = '';
       title.current.value = '';
@@ -78,7 +85,7 @@ function CreatePost() {
           type="text"
           className="form-control"
           id="reaction"
-          placeholder="Enter No of Recations"
+          placeholder="Like Dislike"
           ref = {reaction}
         />
       </div>

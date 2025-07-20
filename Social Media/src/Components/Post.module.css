@@ -8,3 +8,8 @@
 .delete{
   cursor: pointer;
 }
+
+.reaction{
+  margin: 5px;
+  text-align: center;
+}

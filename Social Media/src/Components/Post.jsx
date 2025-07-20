@@ -21,8 +21,8 @@ function Post({ data }) {
           <span className="visually-hidden">unread messages</span>
         </span>
 
-        <div className={`alert alert-success ${style.tag}`} role="alert">
-          {`This post is reacted by ${data.reaction} peoples`}
+        <div className={`alert alert-success ${style.reaction}`} role="alert">
+          {data.reaction}
         </div>
       </div>
     </div>
