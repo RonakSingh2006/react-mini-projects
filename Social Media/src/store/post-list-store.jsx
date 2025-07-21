@@ -26,7 +26,7 @@ const postReducer = (postList, action) => {
     newList = postList.filter((p) => p.id != action.payload.id);
   } else if (action.type === "ADD_POST") {
     let newPost = action.payload;
-    newList = [...newList, newPost];
+    newList = [newPost,...newList];
   } else if (action.type === "ADD_INIT_POST") {
     newList = action.payload.posts.map((e) =>
       create(e.userId, e.title, e.body, e.reactions, e.tags, e.id)
