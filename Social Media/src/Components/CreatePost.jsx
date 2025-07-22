@@ -23,8 +23,20 @@ function CreatePost() {
         dislikes : reactionArr[1]
       } 
 
+      fetch('https://dummyjson.com/posts/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: title.current.value,
+        userId: user.current.value,
+        body:postText.current.value,
+        reactions : reactionObj,
+        tags : tags.current.value.split(" ")
+      })
+      })
+      .then(res => res.json())
+      .then(r=>addPost(r));
       
-      addPost(user.current.value,title.current.value,postText.current.value,reactionObj,tags.current.value.split(" "));
 
       user.current.value = '';
       title.current.value = '';

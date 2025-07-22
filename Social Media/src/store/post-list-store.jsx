@@ -1,21 +1,21 @@
-import { createContext, useReducer } from "react";
+import { createContext, useCallback, useReducer , useEffect , useState} from "react";
 const PostContext = createContext({
   postList: [],
   addPost: () => {},
   deletePost: () => {},
-  initPost: () => {},
+  fetching : false
 });
 
 export { PostContext };
 
-function create(userId, title, post, reaction, tags, id = Date.now()) {
+function create(post) {
   return {
-    id: id,
-    title: title,
-    post: post,
-    reaction: `Like ${reaction.likes} Dislike ${reaction.dislikes}`,
-    userId: userId,
-    tags: tags,
+    id: post.id,
+    title: post.title,
+    post: post.body,
+    reaction: `Like ${post.reactions.likes} Dislike ${post.reactions.dislikes}`,
+    userId: post.userId,
+    tags: post.tags,
   };
 }
 
@@ -24,18 +24,25 @@ const postReducer = (postList, action) => {
   let newList = postList;
   if (action.type === "DELETE_POST") {
     newList = postList.filter((p) => p.id != action.payload.id);
-  } else if (action.type === "ADD_POST") {
+  } 
+  else if (action.type === "ADD_POST") {
     let newPost = action.payload;
-    newList = [newPost,...newList];
-  } else if (action.type === "ADD_INIT_POST") {
+    newList = [newPost, ...newList];
+  } 
+  else if (action.type === "ADD_INIT_POST") {
     newList = action.payload.posts.map((e) =>
-      create(e.userId, e.title, e.body, e.reactions, e.tags, e.id)
+      create(e)
     );
   }
   return newList;
 };
 
 function PostProvider({ children }) {
+
+  // Reducer
+  const [postList, postdispatch] = useReducer(postReducer, []);
+  let [fetching , setFetch] = useState(false);
+
   // add Intial Posts
   const initPost = (posts) => {
     let intialPostDispatch = {
@@ -49,31 +56,50 @@ function PostProvider({ children }) {
   };
 
   // addPost
-  const addPost = (userId, title, post, reaction, tags) => {
-    let addDispatch = {
-      type: "ADD_POST",
-      payload: create(userId, title, post, reaction, tags),
-    };
+  const addPost = useCallback(
+    (post) => {
+      let addDispatch = {
+        type: "ADD_POST",
+        payload: create(post),
+      };
 
-    postdispatch(addDispatch);
-  };
+      postdispatch(addDispatch);
+    },
+    [postdispatch]
+  );
 
   // delete Post
-  const deletePost = (id) => {
-    const deleteDispatch = {
-      type: "DELETE_POST",
-      payload: { id },
-    };
+  // useCallback is used to stop rerender function on every call
+  const deletePost = useCallback(
+    (id) => {
+      const deleteDispatch = {
+        type: "DELETE_POST",
+        payload: { id },
+      };
 
-    postdispatch(deleteDispatch);
-  };
+      postdispatch(deleteDispatch);
+    },
+    [postdispatch]
+  );
 
-  // Reducer
-  const [postList, postdispatch] = useReducer(postReducer, []);
+  // fetching post
+  // run of first render
+
+  useEffect(()=>{
+    let load = async ()=>{
+      setFetch(true);
+      let response = await fetch('https://dummyjson.com/posts');
+      let postdata = await response.json();
+      initPost(postdata.posts);
+      setFetch(false);
+    }
+    load();
+  },[]); 
+
 
   // Provider
   return (
-    <PostContext.Provider value={{ postList, addPost, deletePost, initPost }}>
+    <PostContext.Provider value={{ postList, addPost, fetching , deletePost, initPost }}>
       {children}
     </PostContext.Provider>
   );
