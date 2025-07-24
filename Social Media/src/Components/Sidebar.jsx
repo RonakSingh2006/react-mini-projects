@@ -1,4 +1,7 @@
-function SideBar({currTab,setTab}) {
+import {Link} from "react-router-dom";
+import { useState } from "react";
+function SideBar() {
+  let [currTab, setTab] = useState("Home");
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark heightFix"
@@ -15,16 +18,16 @@ function SideBar({currTab,setTab}) {
 
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <a href="#" className={`nav-link text-white ${currTab === "Home" && "active"}`} aria-current="page" onClick={()=>{setTab("Home")}}>
+          <Link to="/" className={`nav-link text-white ${currTab === "Home" && "active"}`} aria-current="page" onClick={()=>{setTab("Home")}}>
             <i className="bi bi-house pe-none me-2"></i>
             Home
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#" className={`nav-link text-white ${currTab === "Create Post" && "active"}`} onClick={()=>{setTab("Create Post")}}>
+          <Link to="create-post" className={`nav-link text-white ${currTab === "Create Post" && "active"}`} onClick={()=>{setTab("Create Post")}}>
             <i className="bi bi-speedometer2 pe-none me-2"></i>
             Create Post
-          </a>
+          </Link>
         </li>
       </ul>
 

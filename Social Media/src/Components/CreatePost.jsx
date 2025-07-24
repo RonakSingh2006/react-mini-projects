@@ -1,8 +1,11 @@
 import style from "./CreatePost.module.css";
 import { useRef , useContext} from "react";
 import { PostContext } from "../store/post-list-store";
+import { useNavigate } from "react-router-dom";
 
 function CreatePost() {
+
+  let navigate = useNavigate();
 
   let user = useRef();
   let title = useRef();
@@ -35,7 +38,10 @@ function CreatePost() {
       })
       })
       .then(res => res.json())
-      .then(r=>addPost(r));
+      .then(r=>{
+        addPost(r);
+        navigate("/");
+      });
       
 
       user.current.value = '';
@@ -54,7 +60,7 @@ function CreatePost() {
           type="text"
           className="form-control"
           id="userId"
-          placeholder="Enter your userId"
+          placeholder="Enter your userId (1-50)"
           ref={user}
         />
       </div>
